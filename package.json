@@ -1,0 +1,30 @@
+{
+  "name": "CucumberWorkshop",
+  "version": "1.0.0",
+  "description": "Shouty exercise in JavaScript",
+  "main": "index.js",
+  "scripts": {
+    "test": "cucumber.js"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git@github.com:lindastepanuka/cucumber_workshop.git"
+  },
+  "keywords": [
+    "shouty",
+    "bdd",
+    "cucumber"
+  ],
+  "author": "Linda Stepanuka",
+  "bugs": {
+    "url": "https://github.com/lindastepanuka/cucumber_workshop/issues"
+  },
+  "homepage": "https://github.com/lindastepanuka/cucumber_workshop.git",
+  "devDependencies": {
+    "chai": "^2.1.2",
+    "cucumber": "^0.4.8",
+    "mocha": "^2.2.1",
+    "sinon": "^1.14.1",
+    "sinon-chai": "^2.7.0"
+  }
+}
