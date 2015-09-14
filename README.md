@@ -2,6 +2,10 @@
 
 A workshop for Tieto Baltic Networking Conference. Based on [Shouty.js](https://github.com/cucumber-ltd/shouty.js).
 
+## Info
+
+The examples have been added to the respective folders. There's also a workshop_2 folder for visiting Tieto.com webpage.
+
 ## Shouty
 
 Shouty is a social networking application for short physical distances.
