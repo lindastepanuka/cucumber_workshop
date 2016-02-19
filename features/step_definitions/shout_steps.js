@@ -1,50 +1,51 @@
 var chai   = require('chai');
 var expect = chai.expect;
+var assert = require('assert');
 var Shouty = require('../../lib/shouty');
 
 var Network = Shouty.Network;
-var SystemUser = Shouty.SystemUser;
 
 module.exports = function () {
+  this.World = require('./selenium_world').SeleniumWorld;
 
-  this.Given(/^Company and Ann are within system$/, function (callback) {
-    this.network = new Network();
+  var server;
 
-    this.Company = new SystemUser(this.network);
-    this.Ann = new SystemUser(this.network);
-
-    callback();
+  this.Before(function (callback) {
+    var shoutyApp = require('../../lib/shouty_app');
+    server = shoutyApp().listen(3030, callback);
   });
 
-  this.Given(/^Company is at position (.*) and Ann is in position (.*)$/, function (companyPosition, annPosition, callback) {
-    this.Company.position = companyPosition;
-    this.Ann.position = annPosition;
-
-    callback();
+  this.After(function (callback) {
+    this.closeAll();
+    server.close(function () {
+      callback();
+    });
   });
 
-  this.When(/^Company shouts "([^"]*)"$/, function (shout, callback) {
-    this.Company.shout(shout);
-    // Write code here that turns the phrase above into concrete actions
-    callback();
+  this.Given(/^Ann is within the system at position (\d+)$/, function (position, callback) {
+    this.getUser("Ann", position, callback);
   });
 
-  this.Then(/^Ann should hear "([^"]*)"$/, function (shout, callback) {
-    expect(this.Ann.heardMessages).to.include(shout);
-
-    callback();
+  this.Given(/^Company is within the system at position (\d+)$/, function (position, callback) {
+    this.getUser("Company", position, callback);
   });
 
-  this.Given(/^Company and Ann are not in range of each other$/, function (callback) {
-    this.Company.position = 0;
-    this.Ann.position = 1001;
-
-    callback();
+  this.When(/^Company shouts "([^"]*)"$/, function (message, callback) {
+    this.broadcast(message, 'Company', callback);
   });
 
-  this.Then(/^Ann should not hear "([^"]*)"$/, function (shout, callback) {
-    expect(this.Ann.heardMessages).to.not.include(shout)
+  this.Then(/^Ann should hear "([^"]*)"$/, function (expectedMessage, callback) {
+    this.messagesHeardBy('Ann', function (err, actualMessagesHeard) {
+      assert.deepEqual(actualMessagesHeard, [expectedMessage]);
+      callback();
+    });
 
-    callback();
+  });
+
+  this.Then(/^Ann should not hear "([^"]*)"$/, function (arg1, callback) {
+    this.messagesHeardBy('Ann', function (err, actualMessagesHeard) {
+      assert.deepEqual(actualMessagesHeard, []);
+      callback();
+    });
   });
 };

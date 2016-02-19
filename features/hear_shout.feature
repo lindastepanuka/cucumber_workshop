@@ -10,10 +10,10 @@ Feature: Hear Shout
     Ann - a listener
 
   Background:
-    Given Company and Ann are within system
+    Given Ann is within the system at position 100
+    Given Company is within the system at position 200
 
   Scenario Outline: Company shouts and Ann hears
-    And Company is at position <company_position> and Ann is in position <ann_position>
     When Company shouts "FREE BDD WORKSHOP FOR ALL"
     Then Ann should hear "FREE BDD WORKSHOP FOR ALL"
 
@@ -22,8 +22,3 @@ Feature: Hear Shout
     |0|100|
     |0|1000|
     |-100|200|
-
-  Scenario: Company shouts and Ann does not hear
-    And Company and Ann are not in range of each other
-    When Company shouts "FREE BDD WORKSHOP FOR ALL"
-    Then Ann should not hear "FREE BDD WORKSHOP FOR ALL"
